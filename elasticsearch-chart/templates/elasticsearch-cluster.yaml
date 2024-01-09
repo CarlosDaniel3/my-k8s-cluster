@@ -1,0 +1,33 @@
+apiVersion: elasticsearch.k8s.elastic.co/v1
+kind: Elasticsearch
+metadata:
+  name: {{ .Release.Name }}-elasticsearch-sample
+spec:
+  version: {{ .Values.elasticsearch.version }}
+  nodeSets:
+    - name: default
+      config:
+        node.roles:
+          - master
+          - data
+        node.attr.attr_name: attr_value
+        node.store.allow_mmap: false
+      podTemplate:
+        metadata:
+          labels:
+            app: {{ .Release.Name }}
+        spec:
+          {{- with .Values.elasticsearch.containers }}
+          containers:
+            - name: {{ .name }}
+              {{- if eq .resources.enabled true }}
+              resources:
+                requests:
+                  memory: {{ .resources.requests.memory }}
+                  cpu: {{ .resources.requests.cpu }}
+                limits:
+                  memory: {{ .resources.limits.memory }}
+                  cpu: {{ .resources.limits.cpu }}
+              {{- end }}
+          {{- end }}
+      count: {{ .Values.elasticsearch.count }}

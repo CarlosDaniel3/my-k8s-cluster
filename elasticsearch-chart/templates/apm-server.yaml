@@ -1,0 +1,11 @@
+apiVersion: apm.k8s.elastic.co/v1
+kind: ApmServer
+metadata:
+  name: {{ .Release.Name }}-apmserver-sample
+spec:
+  {{- with .Values.apmServer }}
+  version: {{ .version }}
+  count: {{ .count }}
+  {{- end}}
+  elasticsearchRef:
+    name: {{ .Release.Name }}-sample

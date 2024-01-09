@@ -1,0 +1,31 @@
+apmServer:
+  version: 8.11.0
+  count: 1
+
+elasticsearch:
+  version: 8.11.0
+  containers:
+    name: elasticsearch
+    resources:
+      enabled: true
+      requests:
+        memory: 4Gi
+        cpu: 1
+      limits:
+        memory: 4Gi
+        cpu: 2
+  count: 3
+
+kibana:
+  version: 8.11.0
+  count: 1
+  containers:
+    name: kibana
+    resources:
+      enabled: true
+      requests:
+        memory: 1Gi
+        cpu: 0.5
+      limits:
+        memory: 2Gi
+        cpu: 2

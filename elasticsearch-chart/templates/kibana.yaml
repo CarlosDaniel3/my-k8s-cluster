@@ -1,0 +1,29 @@
+apiVersion: kibana.k8s.elastic.co/v1
+kind: Kibana
+metadata:
+  name: {{ .Release.Name }}-kibana-sample
+spec:
+  {{- with .Values.kibana }}
+  version: {{ .version }}
+  count: {{ .count }}
+  {{- end }}
+  elasticsearchRef:
+    name: {{ .Release.Name }}-sample
+  podTemplate:
+    metadata:
+      labels:
+        app: {{ .Release.Name }}
+    spec:
+      {{- with .Values.kibana.containers }}
+      containers:
+        - name: {{ .name }}
+          {{- if eq .resources.enabled true }}
+          resources:
+            requests:
+              memory: {{ .resources.requests.memory }}
+              cpu: {{ .resources.requests.cpu }}
+            limits:
+              memory: {{ .resources.limits.memory }}
+              cpu: {{ .resources.limits.cpu }}
+          {{- end }}
+      {{- end }}
